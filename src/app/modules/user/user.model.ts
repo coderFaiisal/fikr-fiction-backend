@@ -13,7 +13,7 @@ const userSchema = new Schema<IUser, UserModel>({
 userSchema.statics.isUserExist = async function (
   email: string,
 ): Promise<IUser | null> {
-  return await User.findOne({ email }).lean();
+  return await User.findOne({ email }).select('+password').lean();
 };
 
 userSchema.statics.isPasswordMatched = async function (
