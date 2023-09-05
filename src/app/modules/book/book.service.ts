@@ -35,6 +35,24 @@ const getSingleBook = async (bookId: string): Promise<IBook | null> => {
   return result;
 };
 
+const updateBook = async (
+  bookId: string,
+  user: JwtPayload | null,
+  payload: Partial<IBook>,
+): Promise<IBook | null> => {
+  const isBookExist = await Book.isBookExist(bookId);
+  if (!isBookExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book does not found!');
+  }
+
+  if (isBookExist?.authorEmail !== user?.email) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+  }
+
+  const result = await Book.findByIdAndUpdate(bookId, payload, { new: true });
+  return result;
+};
+
 const deleteBook = async (
   bookId: string,
   user: JwtPayload | null,
@@ -56,5 +74,6 @@ export const BookService = {
   createBook,
   bookReview,
   getSingleBook,
+  updateBook,
   deleteBook,
 };

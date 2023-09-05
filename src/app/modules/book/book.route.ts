@@ -13,7 +13,7 @@ router.post(
 );
 
 router.post(
-  '/review/:id',
+  '/add-review/:id',
   validateRequest(BookValidation.bookReviewZodSchema),
   BookController.bookReview,
 );
@@ -22,7 +22,12 @@ router.get('/:id', BookController.getSingleBook);
 
 router.get('/');
 
-router.patch('/:id');
+router.patch(
+  '/:id',
+  auth(),
+  validateRequest(BookValidation.updateBookZodSchema),
+  BookController.updateBook,
+);
 
 router.delete('/:id', auth(), BookController.deleteBook);
 
