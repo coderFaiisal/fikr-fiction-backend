@@ -29,7 +29,13 @@ const bookReview = async (
   return result;
 };
 
+const getSingleBook = async (bookId: string): Promise<IBook | null> => {
+  const result = await Book.findById(bookId).populate('authorId');
+  return result;
+};
+
 export const BookService = {
   createBook,
   bookReview,
+  getSingleBook,
 };

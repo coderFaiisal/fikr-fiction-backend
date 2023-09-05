@@ -17,7 +17,7 @@ router.post(
   BookController.bookReview,
 );
 
-router.get('/:id');
+router.get('/:id', BookController.getSingleBook);
 
 router.get('/');
 
