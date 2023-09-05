@@ -20,7 +20,7 @@ router.post(
 
 router.get('/:id', BookController.getSingleBook);
 
-router.get('/');
+router.get('/', BookController.getAllBooks);
 
 router.patch(
   '/:id',

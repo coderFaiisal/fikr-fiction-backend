@@ -35,6 +35,11 @@ const getSingleBook = async (bookId: string): Promise<IBook | null> => {
   return result;
 };
 
+const getAllBooks = async (): Promise<IBook[]> => {
+  const result = await Book.find();
+  return result;
+};
+
 const updateBook = async (
   bookId: string,
   user: JwtPayload | null,
@@ -74,6 +79,7 @@ export const BookService = {
   createBook,
   bookReview,
   getSingleBook,
+  getAllBooks,
   updateBook,
   deleteBook,
 };
