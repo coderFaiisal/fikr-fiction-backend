@@ -1,6 +1,9 @@
 import httpStatus from 'http-status';
+import { Secret } from 'jsonwebtoken';
+import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
-import { IUser } from './user.interface';
+import { jwtHelper } from '../../../helpers/jwtHelper';
+import { ILoginResponse, ILoginUser, IUser } from './user.interface';
 import { User } from './user.model';
 
 const createUser = async (payload: IUser): Promise<IUser> => {
@@ -14,7 +17,7 @@ const createUser = async (payload: IUser): Promise<IUser> => {
   return result;
 };
 
-const loginUser = async (payload: Partial<IUser>) => {
+const loginUser = async (payload: ILoginUser): Promise<ILoginResponse> => {
   const { email, password } = payload;
 
   //check user
@@ -33,6 +36,28 @@ const loginUser = async (payload: Partial<IUser>) => {
   if (!isPasswordMatched) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Incorrect password!');
   }
+
+  //create token
+  const accessToken = jwtHelper.createToken(
+    {
+      email,
+    },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
+  );
+
+  const refreshToken = jwtHelper.createToken(
+    {
+      email,
+    },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string,
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
 export const UserService = {
