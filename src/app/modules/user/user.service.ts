@@ -3,7 +3,12 @@ import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 import { jwtHelper } from '../../../helpers/jwtHelper';
-import { ILoginResponse, ILoginUser, IUser } from './user.interface';
+import {
+  ILoginResponse,
+  ILoginUser,
+  IRefreshTokenResponse,
+  IUser,
+} from './user.interface';
 import { User } from './user.model';
 
 const createUser = async (payload: IUser): Promise<IUser> => {
@@ -34,7 +39,7 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginResponse> => {
   );
 
   if (!isPasswordMatched) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Incorrect password!');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect password!');
   }
 
   //create token
@@ -60,7 +65,43 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginResponse> => {
   };
 };
 
+const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
+  //verify refreshToken
+  let verifiedToken = null;
+  try {
+    verifiedToken = jwtHelper.verifyToken(
+      token,
+      config.jwt.refresh_secret as Secret,
+    );
+  } catch (error) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token!');
+  }
+
+  const { email } = verifiedToken;
+
+  //check user
+  const isUserExist = await User.isUserExist(email);
+
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User Doesn't Exist!");
+  }
+
+  //generate accessToken
+  const newAccessToken = jwtHelper.createToken(
+    {
+      email,
+    },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
+  );
+
+  return {
+    accessToken: newAccessToken,
+  };
+};
+
 export const UserService = {
   createUser,
   loginUser,
+  refreshToken,
 };
