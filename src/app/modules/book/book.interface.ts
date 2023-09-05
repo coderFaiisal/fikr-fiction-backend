@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 
 export type IBook = {
   title: string;
   author: string;
+  authorEmail: string;
   genre: string;
   publicationDate: string;
-  authorId: Types.ObjectId;
   reviews?: string[];
 };
 

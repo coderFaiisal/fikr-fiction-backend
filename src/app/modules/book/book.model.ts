@@ -5,9 +5,9 @@ const bookSchema = new Schema<IBook, BookModel>(
   {
     title: { type: String, required: true },
     author: { type: String, required: true },
+    authorEmail: { type: String, required: true },
     genre: { type: String, required: true },
     publicationDate: { type: String, required: true },
-    authorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     reviews: [{ type: String }],
   },
   {
@@ -18,7 +18,7 @@ const bookSchema = new Schema<IBook, BookModel>(
 bookSchema.statics.isBookExist = async function (
   bookId: string,
 ): Promise<IBook | null> {
-  return await Book.findById(bookId).populate('authorId').lean();
+  return await Book.findById(bookId).lean();
 };
 
 export const Book = model<IBook, BookModel>('Book', bookSchema);
