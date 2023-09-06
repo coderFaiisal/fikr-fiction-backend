@@ -14,6 +14,18 @@ const createReadingListZodSchema = z.object({
   }),
 });
 
+const updateReadingListZodSchema = z.object({
+  body: z.object({
+    status: z.enum(
+      ['reading', 'read soon', 'finished'] as [string, ...string[]],
+      {
+        required_error: 'Status is required',
+      },
+    ),
+  }),
+});
+
 export const ReadingListValidation = {
   createReadingListZodSchema,
+  updateReadingListZodSchema,
 };

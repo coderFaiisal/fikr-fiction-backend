@@ -1,8 +1,8 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
-import { ReadingListValidation } from './readingList.validation';
 import { ReadingListController } from './readingList.controller';
+import { ReadingListValidation } from './readingList.validation';
 
 const router = express.Router();
 
@@ -12,7 +12,13 @@ router.post(
   ReadingListController.createReadingList,
 );
 
-router.get('/', auth());
-router.patch('/:id', auth());
+router.get('/', auth(), ReadingListController.getReadingLists);
+
+router.patch(
+  '/:id',
+  auth(),
+  validateRequest(ReadingListValidation.updateReadingListZodSchema),
+  ReadingListController.updateReadingList,
+);
 
 export const ReadingListRoutes = router;

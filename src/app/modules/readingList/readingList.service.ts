@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
 import ApiError from '../../../errors/ApiError';
 import { IReadingList } from './readingList.interface';
 import { ReadingList } from './readingList.model';
@@ -20,6 +21,41 @@ const createReadingList = async (
   return result;
 };
 
+const getReadingLists = async (
+  user: JwtPayload | null,
+): Promise<IReadingList[]> => {
+  const result = await ReadingList.find({ userEmail: user?.email }).populate(
+    'bookId',
+  );
+  return result;
+};
+
+const updateReadingList = async (
+  user: JwtPayload | null,
+  listId: string,
+  payload: Partial<IReadingList>,
+): Promise<IReadingList | null> => {
+  //check list
+  const isListExist = await ReadingList.findById(listId);
+
+  if (!isListExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Reading item does not found!');
+  }
+
+  //check authentic user
+  if (isListExist?.userEmail !== user?.email) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const result = await ReadingList.findByIdAndUpdate(listId, payload, {
+    new: true,
+  }).populate('bookId');
+
+  return result;
+};
+
 export const ReadingListService = {
   createReadingList,
+  getReadingLists,
+  updateReadingList,
 };
