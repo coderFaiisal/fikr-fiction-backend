@@ -7,10 +7,10 @@ import { WishListValidation } from './wishList.validation';
 const router = express.Router();
 
 router.post(
-  'create-wishList',
+  '/create-wishList',
   validateRequest(WishListValidation.createWishListZodSchema),
   WishListController.createWishList,
 );
-router.get('/', auth());
+router.get('/', auth(), WishListController.getWishList);
 
 export const WishListRoutes = router;
