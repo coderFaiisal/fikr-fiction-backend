@@ -1,28 +1,28 @@
-### Fikr Fiction Backend
+### Live Link: https://fikr-fiction-backend.vercel.app/api/v1
 
 ### User
 
-    users/create-user (POST)
-    users/login (POST)
-    users/refreshToken (POST)
+- https://fikr-fiction-backend.vercel.app/api/v1/users/create-user (POST)
+- https://fikr-fiction-backend.vercel.app/api/v1/users/login (POST)
+- https://fikr-fiction-backend.vercel.app/api/v1/users/refreshToken (POST)
 
 ### Book
 
-books/create-book (POST) (Auth User)
-books/review/:id (POST) (Auth User | Login User)
-books/ (GET)
-books/:id (GET) (Details Info)
-books/? search - title | author | genre or filter on genre & publication year (GET)
-books/:id (PATCH) (Auth User | Author User)
-books/:id (DELETE) (Auth User | Author User)
+- https://fikr-fiction-backend.vercel.app/api/v1/books/create-book (POST) (Auth User)
+- https://fikr-fiction-backend.vercel.app/api/v1/books/review/:id (POST) (Login User)
+- https://fikr-fiction-backend.vercel.app/api/v1/books/ (GET)
+- https://fikr-fiction-backend.vercel.app/api/v1/books/:id (GET) (Details Info)
+- https://fikr-fiction-backend.vercel.app/api/v1/books/? search - title | author | genre or filter on genre & publication year (GET)
+- https://fikr-fiction-backend.vercel.app/api/v1/books/:id (PATCH) (Auth User | Author User)
+- https://fikr-fiction-backend.vercel.app/api/v1/books/:id (DELETE) (Auth User | Author User)
 
 ### Wish List
 
-wishLists/create-wishList (POST)
-wishLists/ (GET) (Auth User)
+https://fikr-fiction-backend.vercel.app/api/v1/wishLists/create-wishList (POST)
+https://fikr-fiction-backend.vercel.app/api/v1/wishLists/ (GET) (Auth User)
 
 ### Reading List
 
-readingLists/create-readingList (POST)
-readingLists/ (GET) (Auth User)
-readingLists/:id (PATCH) (Auth User)
+- https://fikr-fiction-backend.vercel.app/api/v1/readingLists/create-readingList (POST)
+- https://fikr-fiction-backend.vercel.app/api/v1/readingLists/ (GET) (Auth User)
+- https://fikr-fiction-backend.vercel.app/api/v1/readingLists/:id (PATCH) (Auth User)
