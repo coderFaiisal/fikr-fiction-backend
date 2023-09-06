@@ -8,16 +8,15 @@ const createReadingList = async (
 ): Promise<IReadingList> => {
   const { userEmail, bookId } = payload;
 
-  const isExist = await ReadingList.find({
-    userEmail: userEmail,
-    bookId: bookId,
-  });
+  const isExist = await ReadingList.findOne({ userEmail, bookId });
 
   if (isExist) {
     throw new ApiError(httpStatus.CONFLICT, 'Already added');
   }
 
-  const result = await ReadingList.create(payload);
+  payload.status = 'read soon';
+
+  const result = (await ReadingList.create(payload)).populate('bookId');
   return result;
 };
 

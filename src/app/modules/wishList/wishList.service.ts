@@ -5,7 +5,7 @@ import { IWishList } from './wishList.interface';
 import { WishList } from './wishList.model';
 
 const createWishList = async (payload: IWishList): Promise<IWishList> => {
-  const isExist = await WishList.find(payload);
+  const isExist = await WishList.findOne(payload);
 
   if (isExist) {
     throw new ApiError(httpStatus.CONFLICT, 'Already added');

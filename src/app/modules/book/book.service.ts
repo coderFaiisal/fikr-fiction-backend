@@ -10,6 +10,14 @@ import { IBook, IBookFilter } from './book.interface';
 import { Book } from './book.model';
 
 const createBook = async (payload: IBook): Promise<IBook> => {
+  const { title, author, genre } = payload;
+
+  const isExist = await Book.findOne({ title, author, genre });
+
+  if (isExist) {
+    throw new ApiError(httpStatus.CONFLICT, 'This book already added');
+  }
+
   const result = await Book.create(payload);
   return result;
 };
