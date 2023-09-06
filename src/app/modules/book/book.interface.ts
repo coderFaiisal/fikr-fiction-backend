@@ -6,10 +6,16 @@ export type IBook = {
   author: string;
   authorEmail: string;
   genre: string;
-  publicationDate: string;
+  publicationYear: string;
   reviews?: string[];
 };
 
 export type BookModel = {
   isBookExist(bookId: string): Promise<IBook | null>;
 } & Model<IBook>;
+
+export type IBookFilter = {
+  searchTerm?: string;
+  genre?: string;
+  publicationYear?: string;
+};

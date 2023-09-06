@@ -1,7 +1,12 @@
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
+import { SortOrder } from 'mongoose';
 import ApiError from '../../../errors/ApiError';
-import { IBook } from './book.interface';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { IGenericResponse } from '../../../interfaces/common';
+import { IPaginationOptions } from '../../../interfaces/pagination';
+import { bookSearchableFields } from './book.constant';
+import { IBook, IBookFilter } from './book.interface';
 import { Book } from './book.model';
 
 const createBook = async (payload: IBook): Promise<IBook> => {
@@ -35,9 +40,64 @@ const getSingleBook = async (bookId: string): Promise<IBook | null> => {
   return result;
 };
 
-const getAllBooks = async (): Promise<IBook[]> => {
-  const result = await Book.find();
-  return result;
+const getAllBooks = async (
+  filters: IBookFilter,
+  paginationOptions: IPaginationOptions,
+): Promise<IGenericResponse<IBook[]>> => {
+  //search logic
+  const { searchTerm, ...filtersData } = filters;
+
+  const andConditions = [];
+
+  if (searchTerm) {
+    andConditions.push({
+      $or: bookSearchableFields.map(field => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: 'i',
+        },
+      })),
+    });
+  }
+
+  //filter logic
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
+
+  //pagination logic
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(paginationOptions);
+
+  const sortConditions: { [key: string]: SortOrder } = {};
+
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+
+  //conditional query
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+
+  const result = await Book.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Book.countDocuments(whereConditions);
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
 };
 
 const updateBook = async (
