@@ -3,7 +3,7 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.post('/create-reading-list');
+router.post('/add-readingList');
 router.get('/', auth());
 
 export const ReadingListRoutes = router;

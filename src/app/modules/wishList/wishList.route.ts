@@ -3,7 +3,7 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.post('create-wishList');
+router.post('add-wishList');
 router.get('/', auth());
 
 export const WishListRoutes = router;

@@ -16,12 +16,12 @@ const moduleRoutes = [
     route: BookRoutes,
   },
   {
-    path: '/readingList',
-    route: ReadingListRoutes,
+    path: '/wishLists',
+    route: WishListRoutes,
   },
   {
-    path: '/wishList',
-    route: WishListRoutes,
+    path: '/readingLists',
+    route: ReadingListRoutes,
   },
 ];
 
