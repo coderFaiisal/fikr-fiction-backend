@@ -17,6 +17,10 @@ const createBookZodSchema = z.object({
     publicationYear: z.string({
       required_error: 'Publication year is required',
     }),
+    ratings: z.string({
+      required_error: 'Rating is required',
+    }),
+    photoURL: z.string().optional(),
   }),
 });
 
@@ -35,6 +39,8 @@ const updateBookZodSchema = z.object({
     authorEmail: z.string().optional(),
     genre: z.string().optional(),
     publicationYear: z.string().optional(),
+    ratings: z.string().optional(),
+    photoURL: z.string().optional(),
   }),
 });
 

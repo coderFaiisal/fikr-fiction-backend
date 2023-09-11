@@ -7,6 +7,8 @@ export type IBook = {
   authorEmail: string;
   genre: string;
   publicationYear: string;
+  ratings: string;
+  photoURL?: string;
   reviews?: string[];
 };
 
