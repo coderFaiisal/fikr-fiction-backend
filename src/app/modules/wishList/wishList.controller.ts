@@ -31,7 +31,22 @@ const getWishList = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteWishList = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  const listId = req.params.id;
+
+  const result = await WishListService.deleteWishList(user, listId);
+
+  sendResponse<IWishList>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Wish list delete successfully',
+    data: result,
+  });
+});
+
 export const WishListController = {
   createWishList,
   getWishList,
+  deleteWishList,
 };

@@ -20,7 +20,29 @@ const getWishList = async (user: JwtPayload | null): Promise<IWishList[]> => {
   return result;
 };
 
+const deleteWishList = async (
+  user: JwtPayload | null,
+  listId: string,
+): Promise<IWishList | null> => {
+  //check list
+  const isListExist = await WishList.findById(listId);
+
+  if (!isListExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Wish item does not found!');
+  }
+
+  //check authentic user
+  if (isListExist?.userEmail !== user?.email) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const result = await WishList.findByIdAndDelete(listId);
+
+  return result;
+};
+
 export const WishListService = {
   createWishList,
   getWishList,
+  deleteWishList,
 };
