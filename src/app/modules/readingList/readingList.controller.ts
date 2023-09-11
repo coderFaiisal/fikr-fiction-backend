@@ -50,8 +50,23 @@ const updateReadingList = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteReadingList = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  const listId = req.params.id;
+
+  const result = await ReadingListService.deleteReadingList(user, listId);
+
+  sendResponse<IReadingList>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Reading list delete successfully',
+    data: result,
+  });
+});
+
 export const ReadingListController = {
   createReadingList,
   getReadingLists,
   updateReadingList,
+  deleteReadingList,
 };

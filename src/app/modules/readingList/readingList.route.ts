@@ -21,4 +21,6 @@ router.patch(
   ReadingListController.updateReadingList,
 );
 
+router.delete('/:id', auth(), ReadingListController.deleteReadingList);
+
 export const ReadingListRoutes = router;

@@ -54,8 +54,30 @@ const updateReadingList = async (
   return result;
 };
 
+const deleteReadingList = async (
+  user: JwtPayload | null,
+  listId: string,
+): Promise<IReadingList | null> => {
+  //check list
+  const isListExist = await ReadingList.findById(listId);
+
+  if (!isListExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Reading item does not found!');
+  }
+
+  //check authentic user
+  if (isListExist?.userEmail !== user?.email) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const result = await ReadingList.findByIdAndDelete(listId);
+
+  return result;
+};
+
 export const ReadingListService = {
   createReadingList,
   getReadingLists,
   updateReadingList,
+  deleteReadingList,
 };
