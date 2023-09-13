@@ -13,7 +13,7 @@ const bookSchema = new Schema<IBook, BookModel>(
     reviews: [
       {
         userName: { type: String },
-        review: { typel: String },
+        review: { type: String },
       },
     ],
   },

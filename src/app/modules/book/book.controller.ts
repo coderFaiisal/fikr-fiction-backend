@@ -23,7 +23,7 @@ const createBook = catchAsync(async (req: Request, res: Response) => {
 
 const bookReview = catchAsync(async (req: Request, res: Response) => {
   const bookId = req.params.id;
-  const { review } = req.body;
+  const review = req.body;
 
   const result = await BookService.bookReview(bookId, review);
 

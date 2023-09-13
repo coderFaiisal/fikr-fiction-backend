@@ -24,3 +24,8 @@ export type IBookFilter = {
   genre?: string;
   publicationYear?: string;
 };
+
+export type IReview = {
+  userName: string;
+  review: string;
+};

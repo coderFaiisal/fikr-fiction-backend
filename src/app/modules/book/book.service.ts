@@ -6,7 +6,7 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { bookSearchableFields } from './book.constant';
-import { IBook, IBookFilter } from './book.interface';
+import { IBook, IBookFilter, IReview } from './book.interface';
 import { Book } from './book.model';
 
 const createBook = async (payload: IBook): Promise<IBook> => {
@@ -24,7 +24,7 @@ const createBook = async (payload: IBook): Promise<IBook> => {
 
 const bookReview = async (
   bookId: string,
-  review: string,
+  review: IReview,
 ): Promise<IBook | null> => {
   const isBookExist = await Book.isBookExist(bookId);
 
