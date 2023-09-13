@@ -10,7 +10,12 @@ const bookSchema = new Schema<IBook, BookModel>(
     publicationYear: { type: String, required: true },
     ratings: { type: String, required: true },
     photoURL: { type: String },
-    reviews: [{ type: String }],
+    reviews: [
+      {
+        userName: { type: String },
+        review: { typel: String },
+      },
+    ],
   },
   {
     timestamps: true,

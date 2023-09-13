@@ -26,8 +26,13 @@ const createBookZodSchema = z.object({
 
 const bookReviewZodSchema = z.object({
   body: z.object({
-    review: z.string({
-      required_error: 'Review is required',
+    reviews: z.object({
+      userName: z.string({
+        required_error: 'User name is required',
+      }),
+      review: z.string({
+        required_error: 'Review is required',
+      }),
     }),
   }),
 });

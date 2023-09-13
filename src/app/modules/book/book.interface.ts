@@ -9,7 +9,10 @@ export type IBook = {
   publicationYear: string;
   ratings: string;
   photoURL?: string;
-  reviews?: string[];
+  reviews?: {
+    userName: string;
+    review: string;
+  }[];
 };
 
 export type BookModel = {
