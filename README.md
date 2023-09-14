@@ -20,11 +20,13 @@
 
 - https://fikr-fiction-backend.vercel.app/api/v1/wishLists/create-wishList (POST) (Login User)
 - https://fikr-fiction-backend.vercel.app/api/v1/wishLists/ (GET) (Auth User)
+- https://fikr-fiction-backend.vercel.app/api/v1/wishLists/:id (Single GET) (Auth User)
 - https://fikr-fiction-backend.vercel.app/api/v1/wishLists/:id (DELETE) (Auth User)
 
 ### Reading List
 
 - https://fikr-fiction-backend.vercel.app/api/v1/readingLists/create-readingList (POST) (Login User)
 - https://fikr-fiction-backend.vercel.app/api/v1/readingLists/ (GET) (Auth User)
+- https://fikr-fiction-backend.vercel.app/api/v1/readingLists/:id (Single GET) (Auth User)
 - https://fikr-fiction-backend.vercel.app/api/v1/readingLists/:id (PATCH) (Auth User)
 - https://fikr-fiction-backend.vercel.app/api/v1/readingLists/:id (DELETE) (Auth User)
