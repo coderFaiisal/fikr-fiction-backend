@@ -30,6 +30,25 @@ const getReadingLists = async (
   return result;
 };
 
+const getSingleReadingLists = async (
+  user: JwtPayload | null,
+  bookId: string,
+): Promise<IReadingList | null> => {
+  //check list
+  const isListExist = await ReadingList.findOne({ bookId });
+
+  if (!isListExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Reading item does not found!');
+  }
+
+  //check authentic user
+  if (isListExist?.userEmail !== user?.email) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  return isListExist;
+};
+
 const updateReadingList = async (
   user: JwtPayload | null,
   listId: string,
@@ -56,10 +75,10 @@ const updateReadingList = async (
 
 const deleteReadingList = async (
   user: JwtPayload | null,
-  listId: string,
+  bookId: string,
 ): Promise<IReadingList | null> => {
   //check list
-  const isListExist = await ReadingList.findById(listId);
+  const isListExist = await ReadingList.findOne({ bookId });
 
   if (!isListExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Reading item does not found!');
@@ -70,7 +89,7 @@ const deleteReadingList = async (
     throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
   }
 
-  const result = await ReadingList.findByIdAndDelete(listId);
+  const result = await ReadingList.findOneAndDelete({ bookId });
 
   return result;
 };
@@ -78,6 +97,7 @@ const deleteReadingList = async (
 export const ReadingListService = {
   createReadingList,
   getReadingLists,
+  getSingleReadingLists,
   updateReadingList,
   deleteReadingList,
 };

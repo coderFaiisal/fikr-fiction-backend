@@ -26,6 +26,20 @@ const getWishList = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IWishList[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
+    message: 'Wish lists retrieved successfully',
+    data: result,
+  });
+});
+
+const getSingleWishList = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  const bookId = req.params.id;
+
+  const result = await WishListService.getSingleWishList(user, bookId);
+
+  sendResponse<IWishList>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
     message: 'Wish list retrieved successfully',
     data: result,
   });
@@ -33,9 +47,9 @@ const getWishList = catchAsync(async (req: Request, res: Response) => {
 
 const deleteWishList = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
-  const listId = req.params.id;
+  const bookId = req.params.id;
 
-  const result = await WishListService.deleteWishList(user, listId);
+  const result = await WishListService.deleteWishList(user, bookId);
 
   sendResponse<IWishList>(res, {
     statusCode: httpStatus.OK,
@@ -49,4 +63,5 @@ export const WishListController = {
   createWishList,
   getWishList,
   deleteWishList,
+  getSingleWishList,
 };

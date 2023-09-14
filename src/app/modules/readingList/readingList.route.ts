@@ -14,6 +14,8 @@ router.post(
 
 router.get('/', auth(), ReadingListController.getReadingLists);
 
+router.get('/:id', auth(), ReadingListController.getSingleReadingLists);
+
 router.patch(
   '/:id',
   auth(),

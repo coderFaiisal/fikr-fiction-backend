@@ -26,10 +26,26 @@ const getReadingLists = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IReadingList[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Reading list retrieved successfully',
+    message: 'Reading lists retrieved successfully',
     data: result,
   });
 });
+
+const getSingleReadingLists = catchAsync(
+  async (req: Request, res: Response) => {
+    const user = req.user;
+    const bookId = req.params.id;
+
+    const result = await ReadingListService.getSingleReadingLists(user, bookId);
+
+    sendResponse<IReadingList>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Reading list retrieved successfully',
+      data: result,
+    });
+  },
+);
 
 const updateReadingList = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
@@ -52,9 +68,9 @@ const updateReadingList = catchAsync(async (req: Request, res: Response) => {
 
 const deleteReadingList = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
-  const listId = req.params.id;
+  const bookId = req.params.id;
 
-  const result = await ReadingListService.deleteReadingList(user, listId);
+  const result = await ReadingListService.deleteReadingList(user, bookId);
 
   sendResponse<IReadingList>(res, {
     statusCode: httpStatus.OK,
@@ -67,6 +83,7 @@ const deleteReadingList = catchAsync(async (req: Request, res: Response) => {
 export const ReadingListController = {
   createReadingList,
   getReadingLists,
+  getSingleReadingLists,
   updateReadingList,
   deleteReadingList,
 };

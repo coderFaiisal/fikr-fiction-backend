@@ -13,6 +13,8 @@ router.post(
 );
 router.get('/', auth(), WishListController.getWishList);
 
+router.get('/:id', auth(), WishListController.getSingleWishList);
+
 router.delete('/:id', auth(), WishListController.deleteWishList);
 
 export const WishListRoutes = router;

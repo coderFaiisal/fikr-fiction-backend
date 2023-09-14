@@ -20,12 +20,12 @@ const getWishList = async (user: JwtPayload | null): Promise<IWishList[]> => {
   return result;
 };
 
-const deleteWishList = async (
+const getSingleWishList = async (
   user: JwtPayload | null,
-  listId: string,
+  bookId: string,
 ): Promise<IWishList | null> => {
   //check list
-  const isListExist = await WishList.findById(listId);
+  const isListExist = await WishList.findOne({ bookId });
 
   if (!isListExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Wish item does not found!');
@@ -36,7 +36,26 @@ const deleteWishList = async (
     throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
   }
 
-  const result = await WishList.findByIdAndDelete(listId);
+  return isListExist;
+};
+
+const deleteWishList = async (
+  user: JwtPayload | null,
+  bookId: string,
+): Promise<IWishList | null> => {
+  //check list
+  const isListExist = await WishList.findOne({ bookId });
+
+  if (!isListExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Wish item does not found!');
+  }
+
+  //check authentic user
+  if (isListExist?.userEmail !== user?.email) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const result = await WishList.findOneAndDelete({ bookId });
 
   return result;
 };
@@ -44,5 +63,6 @@ const deleteWishList = async (
 export const WishListService = {
   createWishList,
   getWishList,
+  getSingleWishList,
   deleteWishList,
 };
