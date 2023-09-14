@@ -68,9 +68,9 @@ const updateReadingList = catchAsync(async (req: Request, res: Response) => {
 
 const deleteReadingList = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
-  const bookId = req.params.id;
+  const id = req.params.id;
 
-  const result = await ReadingListService.deleteReadingList(user, bookId);
+  const result = await ReadingListService.deleteReadingList(user, id);
 
   sendResponse<IReadingList>(res, {
     statusCode: httpStatus.OK,
