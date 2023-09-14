@@ -25,18 +25,18 @@ const getSingleWishList = async (
   bookId: string,
 ): Promise<IWishList | null> => {
   //check list
-  const isListExist = await WishList.findOne({ bookId });
+  const isListExist = await WishList.findOne({
+    userEmail: user?.email,
+    bookId: bookId,
+  });
 
-  if (!isListExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Wish item does not found!');
+  let result = null;
+
+  if (isListExist) {
+    result = isListExist;
   }
 
-  //check authentic user
-  if (isListExist?.userEmail !== user?.email) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
-  }
-
-  return isListExist;
+  return result;
 };
 
 const deleteWishList = async (
